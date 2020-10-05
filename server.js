@@ -17,6 +17,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded( {extended: true} ))
 
 // use STEIN as our data-store
+/** see https://docs.steinhq.com/read-data */
 const store = new SteinStore(process.env.STEIN_SPREADSHEET_URL);
 
 
@@ -46,6 +47,9 @@ app.post("/book", (req, res) => {
   let rawdata = fs.readFileSync(DB_FILENAME);
   let timeslots = JSON.parse(rawdata)
   
+  const date = new Date()
+  let datestr = date.toISOString();
+  
   let value = timeslots["slots"][req.body.timeslot]["label_xls"] || "unknown"
   console.log("adding "+req.body.email+" to time slot -> " + value)
 
@@ -60,7 +64,8 @@ app.post("/book", (req, res) => {
     .append("Reserveringen", [
       {
         "tijdstip": value,
-        "email": req.body.email
+        "email": req.body.email,
+        "waneer": datestr
       }
     ])
     .then(result => {
