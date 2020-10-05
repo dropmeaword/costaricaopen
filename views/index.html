@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Costa Rica Open Ateliers</title>
+  <meta name="description" content="Book a visit to Costa Rica Open Ateliers">
+  <meta name="author" content="derfunke">
+  <script src="js/jquery.js"></script>
+  <script src="js/url.js"></script>
+  <script src="js/has.js"></script>
+  <script src="js/two.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Ropa+Sans&display=swap" rel="stylesheet">
+
+  <style>
+  body {
+    font-family: 'Ropa Sans', sans-serif;
+    background: #ffffff;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
+
+  h1 {
+    font-size: 6.5vw;
+  }
+    
+  .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+  }
+
+  .separator::before, .separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+  }
+  .separator::before {
+      margin-right: .25em;
+  }
+  .separator::after {
+      margin-left: .25em;
+  }
+
+  legend {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    font-size: 2.8vw;
+  }
+
+  input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+  }
+
+  label {
+    background: transparent;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1.5px solid #000;
+    padding: .5em 2em;
+    margin: 0.80em 0.5em;
+  }
+
+  label:hover {
+    background: #ccc;
+  }
+
+  input:checked + label {
+    background: blue;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .radio-group {
+    margin: 1.5em auto;
+  }
+
+  a.btn {
+    background: #ccc;
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    border: 1.5px solid #000;
+    padding: .5em 2em;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-weight:300;
+    color:#000;
+    text-align:center;
+    transition: all 0.2s;
+  }
+  
+  a.btn:hover{
+    color: black;
+    border: 2px solid #000;
+    background-color: red;
+  }
+
+  @media all and (max-width:30em){
+   a.btn {
+    display:block;
+    margin:0.4em auto;
+   }
+  }
+    
+  input[type=text].email-input {
+    background: transparent;
+  }
+
+  input[type=text].error {
+    border-width: 0 0 4px;
+    border-color: red
+  }
+
+  input[type=text].valid {
+    border-width: 0 0 4px;
+    border-color: green
+  }
+
+  input[type=text] {
+     text-align:center;
+  }
+    
+  p { font-size: 5vw; }
+    
+  .email-input {
+    font-family: 'Ropa Sans', sans-serif;
+    -webkit-box-flex: 1;
+    flex: 1 auto;
+    width: 75%;
+/*     margin: 0 0 0.5em 0; */
+    font-size: 7vw;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    font-weight: bold;
+    color: #cccccc;
+  }
+
+  input.email-input {
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: dark-grey
+  }
+    
+  input.email-input:focus {
+    border-width: 0 0 4px;
+    border-color: blue
+  }
+    
+  .debug {
+    border: 1px solid black;
+  }
+    
+  .overlay {
+    position: absolute;
+    width: 100%;
+    margin: 0.1vh auto;
+    position: absolute;
+    overflow: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 600px;
+    text-align: center;
+  }
+</style>
+
+</head>
+<body>
+  <div id="main">
+  </div>
+
+  <div id="overlay" class="overlay">
+    <h1>Costa Rica is open</h1>
+    <form id="frmRsvp" class="form centered front" action="/book" method="POST">
+      <input type="text" id="email" name="email" class="required email-input" value="" placeholder="a.u.b jouw email" />
+      <p>kies een tijdstip voor je bezoek</p>
+      <div id="fstime">
+      </div>
+    </form>
+    <a href="#" class="btn orange" id="frmsend">mijn tijdstip reserveren</a>
+  </div>
+
+  <script>
+  $(function() {
+
+    
+    $('#frmsend').click(function(event) {
+      
+      let submitok = true;
+
+      if( !$("input[name='email']").val() ) {
+        alert("Jij moet je email address intoetsen")
+        $("input[name='email']").addClass("error")
+        $("input[name='email']").focus()
+        submitok = false
+      }
+      
+      // check that a timespan has been selected
+      if( submitok && !$("input[name='timeslot']:checked").val() ) {
+        alert("Jij moet een tijdstip selecteren")
+        submitok = false
+      }
+      
+      if( submitok ) { $( "#frmRsvp" ).submit() }
+		})
+
+    // ///////////////////////////////////////////////////////////
+    //
+    // two.js top-level code
+    //
+    // ///////////////////////////////////////////////////////////
+    var type = /(svg|webgl)/.test(url.type) ? url.type : 'canvas';
+    var elem = document.getElementById('main');
+    var params = { width: 285, height: 200, 
+                   type: Two.Types[type], 
+                   fullscreen: true,
+                   autostart: true };
+    var two = new Two(params).appendTo( elem );
+
+    var characters = [];
+    var gravity = new Two.Vector(0, 0.66);
+
+    var styles = {
+      family: 'proxima-nova, sans-serif',
+      size: 50,
+      leading: 50,
+      weight: 900
+    };
+
+    var directions = two.makeText(has.mobile ? 'Tap Me' : 'Start Typing', two.width / 2, two.height / 2, styles);
+    directions.fill = 'white';
+
+    $(window)
+      .bind('keypress', function(e) {
+        var character = String.fromCharCode(e.which);
+        add(character);
+      })
+      // .bind('touchstart', function() {
+      //   var r = Math.random();
+      //   var character = String.fromCharCode(Math.floor(r*26) + (r>0.5?97:65));
+      //   add(character);
+      // });
+
+    two
+      .bind('resize', function() {
+        directions.translation.set(two.width / 2, two.height / 2);
+      })
+      .bind('update', function() {
+
+        for (var i = 0; i < characters.length; i++) {
+
+          var text = characters[i];
+          text.translation.addSelf(text.velocity);
+          text.rotation += text.velocity.r;
+
+          text.velocity.addSelf(gravity);
+          if (text.velocity.y > 0 && text.translation.y > two.height)  {
+            two.scene.remove(text);
+            characters.splice(i, 1);
+          }
+
+        }
+
+      });
+
+    function add(msg) {
+      var x = Math.random() * two.width / 2 + two.width / 4;
+      var y = two.height * 1.25;
+
+      var text = two.makeText(msg, x, y, styles);
+      text.size *= 2;
+      text.fill = '#333';
+
+      text.velocity = new Two.Vector();
+      text.velocity.x = 10 * (Math.random() - 0.5);
+      text.velocity.y = - (20 * Math.random() + 13);
+      text.velocity.r = Math.random() * Math.PI / 8;
+
+      characters.push(text);
+    }
+
+  });
+  </script>
+  <script>
+    /** render form */
+    var markup = ""
+    fetch("/timeslots")
+      .then(response => response.json())
+      .then(timeslot => {
+        console.log(timeslot)
+        Object.keys(timeslot["days"]).forEach( e => {
+          //console.log(e)
+          markup += '<legend class="separator">'+e+'</legend>'
+          markup += '<div class="radio-group">'
+          timeslot["days"][e].forEach(j => {
+            //console.log(j)
+            //console.log(timeslot["slots"][j].label_html)
+            markup += '  <input id="'+j+'" name="timeslot" type="radio" value="'+j+'"/>'
+            markup += '  <label for="'+j+'">'+timeslot["slots"][j].label_html+'</label>'
+          })
+          markup += '</div>'
+        })
+      
+        console.log( markup )
+        $('#fstime').empty().html( markup )
+      })
+    
+  </script>
+</body>
+</html>
