@@ -1,3 +1,23 @@
+var sass = require("node-sass");
+
+/// start node-sass ///
+sass.render({
+    file: __dirname+'/sass/base.scss'
+  },
+  // In error conditions, the error argument is populated with the error object.
+  // In success conditions, the result object is populated with an object describing the result of the render call.
+  (error, result) => {
+    if (!error) {
+      console.log("📌 Compiled SASS styles and writing them to a CSS file")
+      fs.writeFile(__dirname+'/public/base.css', result.css, error => {
+        if (error) {
+          console.log(error);
+        }
+      });
+    }
+  }
+);
+/// end node-sass ///
 
 var nodemailer = require('nodemailer');
 var postman = nodemailer.createTransport(
@@ -57,7 +77,7 @@ app.post("/book", (req, res) => {
   // read email template from spreadsheet
   store.read("Content", { limit: 1 }).then(data => {
     emlbody = data[0]["email"]
-    console.log("Fetched email template ok")
+    console.log("📨 Fetched email template ok")
   });
 
   // store booking on spreadsheet
@@ -70,7 +90,7 @@ app.post("/book", (req, res) => {
       }
     ])
     .then(result => {
-      console.log("successfully added reservation to spreadsheet");
+      console.log("🧾 successfully added reservation to spreadsheet");
     
       // decrease 'left' counter and save file again
       let seatsleft = parseInt(timeslots["slots"][req.body.timeslot]["left"])
@@ -103,7 +123,7 @@ app.post("/book", (req, res) => {
           if(error){
               return console.log(error);
           }
-          console.log('Message sent: ' + info.response);
+          console.log('📤 Message sent: ' + info.response);
       });
       /*///////// END - THE NODEMAILER PART ///////////*/
     
