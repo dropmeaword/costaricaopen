@@ -1,8 +1,9 @@
 
 var nodemailer = require('nodemailer');
 var postman = nodemailer.createTransport(
-  'smtps://'+process.env.MAILJET_USERNAME+':'+process.env.MAILJET_PASSWORD+'@'+process.env.MAILJET_SMTP_RELAY
+  'smtps://'+process.env.SENDGRID_USERNAME+':'+process.env.SENDGRID_PASSWORD+'@'+process.env.SENDGRID_SMTP_RELAY
 );
+
 
 const SteinStore = require('stein-js-client')
 const fs = require('fs');
@@ -92,7 +93,7 @@ app.post("/book", (req, res) => {
       // setup e-mail data
       var mailOptions = {
           from: '"Costa Rica Broedplaats" <'+process.env.EMAIL_SENDER+'>', // sender address
-          to: req.body.email, // list of receivers
+          to: "dropmeaword@gmail.com",
           subject: 'Je bezoek naar Costa Rica open ateliers', // Subject line
           text: emlbody
       };
