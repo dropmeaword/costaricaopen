@@ -113,7 +113,7 @@ app.post("/book", (req, res) => {
       // setup e-mail data
       var mailOptions = {
           from: '"Costa Rica Broedplaats" <'+process.env.EMAIL_SENDER+'>', // sender address
-          to: "dropmeaword@gmail.com",
+          to: req.body.email,
           subject: 'Je bezoek naar Costa Rica open ateliers', // Subject line
           text: emlbody
       };
